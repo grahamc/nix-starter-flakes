@@ -16,6 +16,7 @@ const extractTagFromRef = (ref: string): string | undefined => {
 interface VersionDirectory {
     directory: string;
     version: string;
+    full_ref: string;
 }
 
 const extractVersionDirectory = (tag?: string, ref: string): VersionDirectory | undefined => {
@@ -35,8 +36,10 @@ const extractVersionDirectory = (tag?: string, ref: string): VersionDirectory | 
     return {
         directory: parts[0],
         version: parts[1],
+        full_ref: `refs/tags/${parts[0]}-${parts[1]}`,
     };
 };
 
 const input_tag: string | undefined = "go-v0.1.0";
 const ref: string = "refs/tags/go-v0.1.1695299916";
+return extractVersionDirectory(input_tag, ref);

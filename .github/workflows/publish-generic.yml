@@ -51,17 +51,19 @@ jobs:
                 return {
                     directory: parts[0],
                     version: parts[1],
+                    full_ref: `refs/tags/${parts[0]}-${parts[1]}`,
                 };
             };
             const input_tag = process.env['INPUT_TAG'];
             const ref = context?.ref;
-            console.log(extractVersionDirectory(input_tag, ref));
+            return extractVersionDirectory(input_tag, ref);
             
-      # - uses: "actions/checkout@v3"
-      #   with:
-      #     ref: "${{ (inputs.tag != null) && format('refs/tags/{0}', inputs.tag) || '' }}"
+      - uses: "actions/checkout@v3"
+        with:
+          ref: "${{ steps.split.outputs.full_ref }}"
+      - run: "echo publishing ${{ steps.split.outputs.directory }} at version ${{ steps.split.outputs.version }} as GetPsyched/${{ steps.split.outputs.directory }}-env"
       # - uses: "DeterminateSystems/nix-installer-action@main"
-      # - run: "echo publishing ${} at version ${} as GetPsyched/${}-env"
+      
       # - uses: "DeterminateSystems/flakehub-push@main"
       #   with:
       #     directory: "cpp"
