@@ -22,8 +22,8 @@ jobs:
           INPUT_TAG: "${{ inputs.tag }}"
         with:
           script: |
-            console.log(`${ process.env['INPUT_TAG']? || "undefined" }`)
-            console.log(`${ github.context?.ref_name? || "undefined" }`)
+            console.log(`${ process.env['INPUT_TAG']   }`)
+            console.log(`${ github.context?.ref_name || "undefined" }`)
 
 
 
