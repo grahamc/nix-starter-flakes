@@ -19,8 +19,8 @@ interface VersionDirectory {
     full_ref: string;
 }
 
-const extractVersionDirectory = (tag?: string, ref: string): VersionDirectory | undefined => {
-    const selected_tag: string | undefined = input_tag || extractTagFromRef(ref);
+const extractVersionDirectory = (ref: string, tag?: string): VersionDirectory | undefined => {
+    const selected_tag: string | undefined = tag || extractTagFromRef(ref);
 
     if (!selected_tag) {
         console.log(`No valid tag identified from the ref ('${ref}') or inputs ('${input_tag}').`);
@@ -43,12 +43,13 @@ const extractVersionDirectory = (tag?: string, ref: string): VersionDirectory | 
 const input_tag: string | undefined = "go-v0.1.0";
 const ref: string = "refs/tags/go-v0.1.1695299916";
 
-const result = extractVersionDirectory(input_tag, ref);
-if (!result) {
+const result = extractVersionDirectory(ref, input_tag);
+if (result) {
+    core.setOutput("directory", result.directory);
+    core.setOutput("version", result.version);
+    core.setOutput("full_ref", result.full_ref);
+} else
     process.exit(1);
 }
 
-core.setOutput("directory", result.directory);
-core.setOutput("version", result.version);
-core.setOutput("full_ref", result.full_ref);
 

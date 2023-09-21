@@ -37,8 +37,8 @@ jobs:
                     return undefined;
                 }
             };
-            const extractVersionDirectory = (tag, ref) => {
-                const selected_tag = input_tag || extractTagFromRef(ref);
+            const extractVersionDirectory = (ref, tag) => {
+                const selected_tag = tag || extractTagFromRef(ref);
                 if (!selected_tag) {
                     console.log(`No valid tag identified from the ref ('${ref}') or inputs ('${input_tag}').`);
                     return undefined;
@@ -54,20 +54,23 @@ jobs:
                     full_ref: `refs/tags/${parts[0]}-${parts[1]}`,
                 };
             };
+
             const input_tag = process.env['INPUT_TAG'];
             const ref = context?.ref;
-            const result = extractVersionDirectory(input_tag, ref);
-            if (!result) {
-                process.exit(1);
+
+            const result = extractVersionDirectory(ref, input_tag);
+            if (result) {
+                core.setOutput("directory", result.directory);
+                core.setOutput("version", result.version);
+                core.setOutput("full_ref", result.full_ref);
             }
-            core.setOutput("directory", result.directory);
-            core.setOutput("version", result.version);
-            core.setOutput("full_ref", result.full_ref);
+            else
+                process.exit(1);
                         
       - uses: "actions/checkout@v3"
         with:
           ref: "${{ steps.split.outputs.full_ref }}"
-          
+
       - uses: "DeterminateSystems/nix-installer-action@main"
       - uses: "DeterminateSystems/flakehub-push@main"
         with:
