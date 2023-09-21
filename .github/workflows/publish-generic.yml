@@ -23,7 +23,8 @@ jobs:
         with:
           script: |
             console.log(`${ process.env['INPUT_TAG'] || "undefined" }`)
-            console.log(`${ github.context?.ref_name || "undefined" }`)
+            console.log(`${ context?.ref_name || "undefined" }`)
+            console.log(`${ context?.ref || "undefined" }`)
 
 
 
