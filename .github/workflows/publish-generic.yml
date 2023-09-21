@@ -56,8 +56,14 @@ jobs:
             };
             const input_tag = process.env['INPUT_TAG'];
             const ref = context?.ref;
-            return extractVersionDirectory(input_tag, ref);
-            
+            const result = extractVersionDirectory(input_tag, ref);
+            if (!result) {
+                process.exit(1);
+            }
+            core.setOutput("directory", result.directory);
+            core.setOutput("version", result.version);
+            core.setOutput("full_ref", result.full_ref);
+                        
       - uses: "actions/checkout@v3"
         with:
           ref: "${{ steps.split.outputs.full_ref }}"
