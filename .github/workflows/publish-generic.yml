@@ -53,11 +53,10 @@ jobs:
                     version: parts[1],
                 };
             };
-            const input_tag = "go-v0.1.0";
-            const ref = "refs/tags/go-v0.1.1695299916";
+            const input_tag = process.env['INPUT_TAG'];
+            const ref = context?.ref;
             console.log(extractVersionDirectory(input_tag, ref));
-          
-
+            
       # - uses: "actions/checkout@v3"
       #   with:
       #     ref: "${{ (inputs.tag != null) && format('refs/tags/{0}', inputs.tag) || '' }}"
