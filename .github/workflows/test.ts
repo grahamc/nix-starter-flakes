@@ -42,4 +42,13 @@ const extractVersionDirectory = (tag?: string, ref: string): VersionDirectory | 
 
 const input_tag: string | undefined = "go-v0.1.0";
 const ref: string = "refs/tags/go-v0.1.1695299916";
-return extractVersionDirectory(input_tag, ref);
+
+const result = extractVersionDirectory(input_tag, ref);
+if (!result) {
+    process.exit(1);
+}
+
+core.setOutput("directory", result.directory);
+core.setOutput("version", result.version);
+core.setOutput("full_ref", result.full_ref);
+
