@@ -67,12 +67,10 @@ jobs:
       - uses: "actions/checkout@v3"
         with:
           ref: "${{ steps.split.outputs.full_ref }}"
-      - run: "echo publishing ${{ steps.split.outputs.directory }} at version ${{ steps.split.outputs.version }} as GetPsyched/${{ steps.split.outputs.directory }}-env"
-      # - uses: "DeterminateSystems/nix-installer-action@main"
-      
-      # - uses: "DeterminateSystems/flakehub-push@main"
-      #   with:
-      #     directory: "cpp"
-      #     name: "GetPsyched/cpp-env"
-      #     tag: "${{ steps.split.outputs._1 }}"
-      #     visibility: "public"
+      - uses: "DeterminateSystems/nix-installer-action@main"
+      - uses: "DeterminateSystems/flakehub-push@main"
+        with:
+          directory: "${{ steps.split.outputs.directory }}"
+          name: "GetPsyched/${{ steps.split.outputs.directory }}-env"
+          tag: "${{ steps.split.outputs.version }}"
+          visibility: "public"
