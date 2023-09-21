@@ -18,9 +18,11 @@ jobs:
     steps:
       - uses: actions/github-script@v6
         id: split
+        env:
+          INPUT_TAG: "${{ inputs.tag }}"
         with:
           script: |
-            console.log(`${ inputs.tag }`)
+            console.log(`${ process.env['INPUT_TAG'] }`)
             console.log(`${ github.context.ref_name }`)
 
 
